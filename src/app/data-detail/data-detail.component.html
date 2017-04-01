@@ -1,0 +1,31 @@
+<h3 class="first">数据详细信息</h3>
+<div *ngIf="q">
+  <textarea rows="5" cols="60" pInputTextarea [(ngModel)]="q.question" (change)="questionChanged($event)"></textarea>
+  <br>
+  <br>
+  <div>
+    <button type="button" icon="fa-plus" (click)="addOpt()" pButton label="add an option"></button>
+  </div>
+
+  <p-dataTable [value]="q.options" [(selection)]="selectedOpt" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+    <p-header>Options</p-header>
+    <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+    <p-column field="" header="">
+      <template let-col let-op="rowData" let-ri="rowIndex" pTemplate="body">
+        <input type="text" value="{{op}}" (change)="optsChanged($event,ri)" />
+        <button pButton type="text" (click)="deleteOpt($event,ri)" icon="fa-close"></button>
+      </template>
+    </p-column>
+    <p-footer>
+      <span>correct index is: {{this.q.correct}}</span>
+      <ul>
+        <!--<li *ngFor="let opt of selectedOptions" style="text-align: left"><span>{{selectedOptions.length===0}}</span>{{opt}}</li>-->
+      </ul>
+    </p-footer>
+  </p-dataTable>
+  <br>
+  <h3>tags</h3>
+  <p-multiSelect [options]="allTags" [(ngModel)]="q.tags"></p-multiSelect>
+  <br>
+  <button type="button" (click)="save()" pButton label="save"></button>
+</div>
