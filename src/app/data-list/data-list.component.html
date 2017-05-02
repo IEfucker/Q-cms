@@ -1,6 +1,6 @@
 <nav>
-  <a [routerLink]="['q']">Question</a>
-  <a [routerLink]="['t']">Test</a>
+  <a [routerLink]="[{ outlets: { list: ['q'] } }]">Question</a>
+  <a [routerLink]="[{ outlets: { list: ['t'] } }]">Test</a>
 </nav>
 <router-outlet name="list"></router-outlet>
 
