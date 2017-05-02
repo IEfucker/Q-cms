@@ -42,15 +42,13 @@ export class TagService {
             });
     }
 
-    delTags(ids: number[]): Promise<void> {
-        const url = `${this.path}/remove.json`;
-        let idsStr = ids.join()
-        // return this.http.delete(url + `?ids=` + idsStr, { headers: this.headers })
-        //     .toPromise()
-        //     .then(() => null)
-        //     .catch(this.handleError)
-        console.log(idsStr + " deleted")
-        return Promise.resolve()
+    delTags(ids: string[]): Observable<any> {
+        const url = `${this.host}${this.path}/tags/del`;
+        console.log(ids)
+        let options = new RequestOptions({ headers: this.headers })
+        return this.http.post(url, { "id": ids }, options)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     saveTag(q: Tag): Observable<Tag> {

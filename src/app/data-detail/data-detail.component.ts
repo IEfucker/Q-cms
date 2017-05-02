@@ -11,6 +11,9 @@ import { Observable } from 'rxjs/Observable';
 // import { Subject }           from 'rxjs/Subject';
 import 'rxjs/add/observable/of';
 
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+
+
 @Component({
   selector: 'app-data-detail',
   templateUrl: './data-detail.component.html',
@@ -43,10 +46,11 @@ export class DataDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private qService: QuestionService,
-    private tService: TagService
+    private tService: TagService,
+    // private confirmationService: ConfirmationService
   ) { }
 
-  getQuestions(): void {
+  getQuestion(): void {
     this.route.params
       // this.route.params
       .switchMap((params: Params) => {
@@ -60,7 +64,6 @@ export class DataDetailComponent implements OnInit {
         this.q = q
         this.selectedOpt = q.options[q.correct]
         this.originalQ = JSON.parse(JSON.stringify(q))
-        console.log(this.q.tags)
       })
   }
 
@@ -69,26 +72,9 @@ export class DataDetailComponent implements OnInit {
       res.forEach(element => {
         this.allTags.push({ label: element.name, value: element["_id"] });
       });
-      console.log(this.allTags)
     }, function (err) {
       console.log(err)
     })
-    //need a service to get all tags
-
-    // this.allTags.push({ label: 'tag1', value: '58dca8382746fa2778ae38e0' });
-    // this.allTags.push({ label: 'tag2', value: '58dca8412746fa2778ae38e1' });
-    // this.allTags.push({ label: 'tag3', value: '58dca8432746fa2778ae38e2' });
-    // this.allTags.push({ label: 'tag4', value: '58dca8462746fa2778ae38e3' });
-    // this.allTags.push({ label: 'tag5', value: '58dca8482746fa2778ae38e4' });
-    // this.allTags.push({ label: 'tag6', value: '58df588e7b5d692d64b295b9' });
-
-    // this.allTags.push({ label: 'tag1', value: 'tag1' });
-    // this.allTags.push({ label: 'tag2', value: 'tag2' });
-    // this.allTags.push({ label: 'tag3', value: 'tag3' });
-    // this.allTags.push({ label: 'tag4', value: 'tag4' });
-    // this.allTags.push({ label: 'tag5', value: 'tag5' });
-    // this.allTags.push({ label: 'tag6', value: 'tag6' });
-    // console.log(this.allTags)
   }
 
   ngOnInit() {
@@ -96,12 +82,8 @@ export class DataDetailComponent implements OnInit {
     //get all tags first all multiselect component would has a bug, 
     // which choose item would show "null"
     this.getTags().then(res=>{
-      this.getQuestions()
+      this.getQuestion()
     })
-    
-
-    // this.allTagsData = 
-
 
   }
 
@@ -121,6 +103,11 @@ export class DataDetailComponent implements OnInit {
     this.q.options = this.q.options.filter(function (v, i) {
       return i !== index
     })
+  }
+
+  // manage tags
+  manageTag(){
+    this.router.navigate(["tags"])
   }
 
   save() {

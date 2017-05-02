@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Question } from './question';
+import {Tag} from './tag'
 
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
@@ -29,9 +30,9 @@ export class QuestionService {
                 console.log(res)
                 return res.json().data
             })
-            .then(data => { 
+            .then(data => {
                 console.log(data)
-                return Promise.resolve(data); 
+                return Promise.resolve(data);
             });
     }
 
@@ -47,33 +48,39 @@ export class QuestionService {
             });
     }
 
-    delQuestions(ids: number[]): Promise<void> {
-        const url = `${this.path}/remove.json`;
-        let idsStr = ids.join()
-        // return this.http.delete(url + `?ids=` + idsStr, { headers: this.headers })
-        //     .toPromise()
-        //     .then(() => null)
-        //     .catch(this.handleError)
-        console.log(idsStr + " deleted")
-        return Promise.resolve()
+    delQuestions(ids: string[]): Observable<any> {
+        const url = `${this.host}${this.path}/questions/del`
+        // console.log(ids)
+        let options = new RequestOptions({ headers: this.headers })
+        return this.http.post(url, { "id": ids }, options)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     saveQuestion(q: Question): Observable<Question> {
         // const url = `${this.path}/save.json`
         const url = `${this.host}${this.path}/question`
         let options = new RequestOptions({ headers: this.headers })
-        if(q['_id']){
-            return this.http.put(url+`/${q['_id']}`, q, options)
-            .map(this.extractData)
-            .catch(this.handleError);
+        if (q['_id']) {
+            return this.http.put(url + `/${q['_id']}`, q, options)
+                .map(this.extractData)
+                .catch(this.handleError);
         }
         return this.http.post(url, q, options)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    makeATest(tags: Tag[]): Observable<Question[]> {
+        const url = `${this.host}${this.path}/makeatest`
+        let options = new RequestOptions({ headers: this.headers })
+        return this.http.post(url, tags, options)
+            .map(this.extractData)
+            .catch(this.handleError)
+    }
     private extractData(res: Response) {
         let body = res.json();
-        return body.data || {data:{}};
+        return body.data || { data: {} };
     }
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // for demo purposes only

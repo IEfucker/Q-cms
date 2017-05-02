@@ -1,31 +1,44 @@
 <h3 class="first">数据详细信息</h3>
-<div *ngIf="q">
-  <textarea rows="5" cols="60" pInputTextarea [(ngModel)]="q.question" (change)="questionChanged($event)"></textarea>
-  <br>
-  <br>
-  <div>
-    <button type="button" icon="fa-plus" (click)="addOpt()" pButton label="add an option"></button>
-  </div>
+<div *ngIf="q" class="Grid">
+  <!--main-->
+  <div class="main Grid-cell u-2of3">
+    <h3>question:</h3>
+    <textarea rows="5" cols="60" pInputTextarea [(ngModel)]="q.question" (change)="questionChanged($event)"></textarea>
+    <h3>options:</h3>
+    <p-dataTable [value]="q.options" [(selection)]="selectedOpt" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+      <p-header>Options</p-header>
+      <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+      <p-column field="" header="">
+        <template let-col let-op="rowData" let-ri="rowIndex" pTemplate="body">
+          <input type="text" value="{{op}}" (change)="optsChanged($event,ri)" />
+          <button pButton type="text" (click)="deleteOpt($event,ri)" icon="fa-close"></button>
+        </template>
+      </p-column>
+      <p-footer>
+        <span>correct index is: {{this.q.correct}}</span>
+        <ul>
+          <!--<li *ngFor="let opt of selectedOptions" style="text-align: left"><span>{{selectedOptions.length===0}}</span>{{opt}}</li>-->
+        </ul>
+      </p-footer>
+    </p-dataTable>
+    
+    <h3>tags:</h3>
+    <p-multiSelect [options]="allTags" [(ngModel)]="q.tags"></p-multiSelect>
+    <br>
 
-  <p-dataTable [value]="q.options" [(selection)]="selectedOpt" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
-    <p-header>Options</p-header>
-    <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-    <p-column field="" header="">
-      <template let-col let-op="rowData" let-ri="rowIndex" pTemplate="body">
-        <input type="text" value="{{op}}" (change)="optsChanged($event,ri)" />
-        <button pButton type="text" (click)="deleteOpt($event,ri)" icon="fa-close"></button>
-      </template>
-    </p-column>
-    <p-footer>
-      <span>correct index is: {{this.q.correct}}</span>
-      <ul>
-        <!--<li *ngFor="let opt of selectedOptions" style="text-align: left"><span>{{selectedOptions.length===0}}</span>{{opt}}</li>-->
-      </ul>
-    </p-footer>
-  </p-dataTable>
-  <br>
-  <h3>tags</h3>
-  <p-multiSelect [options]="allTags" [(ngModel)]="q.tags"></p-multiSelect>
-  <br>
-  <button type="button" (click)="save()" pButton label="save"></button>
+  </div>
+  <!--right-bar-->
+  <div class="right-bar Grid-cell u-1of4">
+    <div class="btn-c">
+      <button type="button" icon="fa-plus" (click)="addOpt()" pButton label="add an option"></button>
+    </div>
+    <div class="btn-c">
+      <button type="text" (click)="manageTag()" pButton icon="fa-plus" label="manage tag"></button>
+    </div>
+    <div class="btn-c">
+      <button type="button" (click)="save()" pButton label="save"></button>
+    </div>
+  </div>
 </div>
+
+<!--<p-confirmDialog header="Add one tag by name" width="425"></p-confirmDialog>-->

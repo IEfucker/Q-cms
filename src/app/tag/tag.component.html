@@ -1,0 +1,42 @@
+<h2>标签列表</h2>
+<!--<p>
+  tag works
+</p>-->
+<div class="Grid">
+  <!--main-->
+  <div class="main Grid-cell u-2of3">
+    <p-dataTable [value]="tags" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadData($event)"
+      selectionMode="single" [(selection)]="tag">
+      <p-column header="index">
+        <template let-rowIndex="rowIndex" pTemplate="body">
+          {{rowIndex+1}}
+        </template>
+      </p-column>
+      <p-column field="name" header="tag"></p-column>
+      <p-column field="" header="delete">
+        <template let-col let-op="rowData" let-ri="rowIndex" pTemplate="body">
+          <button pButton type="text" (click)="delTags($event,ri)" icon="fa-close"></button>
+        </template>
+      </p-column>
+    </p-dataTable>
+  </div>
+
+  <!--right-bar-->
+  <div class="right-bar Grid-cell u-1of4">
+    <div class="btn-c">
+      <label for="">name</label>
+      <input type="text" name="name" [(ngModel)]="tag&&tag.name">
+      <label for="">category</label>
+      <input type="text" name="category" [(ngModel)]="tag&&tag.category">
+    </div>
+    <div class="btn-c">
+      <button type="button" icon="fa-plus" (click)="addModifyTag()" pButton label="add/modify a tag"></button>
+    </div>
+    <!--<div class="btn-c">
+      <button type="text" (click)="addTag()" pButton icon="fa-plus" label="add a new tag"></button>
+    </div>-->
+    <!--<div class="btn-c">
+      <button type="button" (click)="save()" pButton label="save"></button>
+    </div>-->
+  </div>
+</div>

@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+/*Grid with flex*/
+.Grid {
+  display: flex;
+  justify-content:space-between;
+}
+
+.Grid-cell {
+  flex: 1;
+  
+}
+
+.Grid-cell.u-full {
+  flex: 0 0 100%;
+}
+
+.Grid-cell.u-1of2 {
+  flex: 0 0 50%;
+}
+
+.Grid-cell.u-1of3 {
+  flex: 0 0 33.3333%;
+}
+
+.Grid-cell.u-1of4 {
+  flex: 0 0 25%;
+}
+.Grid-cell.u-2of3 {
+  flex: 0 0 66.6667%;
+}
+.Grid-cell.u-3of4 {
+  flex: 0 0 75%;
+}

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import {Router} from "@angular/router"
+import { Router } from "@angular/router"
 
 import { Question } from "../question"
 import { QuestionService } from "../question.service"
-import { LazyLoadEvent, MenuItem } from "primeng/primeng"
+import {TagService} from "../tag.service"
+import { LazyLoadEvent, MenuItem, SelectItem } from "primeng/primeng"
 
 @Component({
   selector: 'app-data-list',
@@ -17,54 +18,73 @@ export class DataListComponent implements OnInit {
   pageSize: number = 2
   rowsPerPageOptions: number[] = [10, 20, 30]
   totalRecords: number
-  selectedQuesions:Question[]
+  selectedQuesions: Question[]
 
-  test:number = 1
+  allTags: SelectItem[]
+  testTags:any[]
+
+  test: number = 1
 
   private items: MenuItem[]
 
   constructor(
     private router: Router,
-    private questionService: QuestionService
-    ) { }
+    private questionService: QuestionService,
+    private tService: TagService
+  ) { }
 
   ngOnInit() {
-    let self = this
     this.items = [
       {
         label: 'New',
-        icon: 'fa-plus', 
+        icon: 'fa-plus',
         command: (event) => {
           //event.originalEvent: Browser event
           //event.item: menuitem metadata
-          self.newQuestion(event)
+          this.newQuestion(event)
         }
 
       },
       {
         label: 'Edit',
-        icon: 'fa-edit', 
+        icon: 'fa-edit',
         command: (event) => {
-          if(!self.selectedQuesions||self.selectedQuesions.length !== 1) {
+          if (!this.selectedQuesions || this.selectedQuesions.length !== 1) {
             alert("Choose one question to edit")
             return
           }
-          self.editQuestion(event,self.selectedQuesions[0])
+          this.editQuestion(event, this.selectedQuesions[0])
         }
       },
       {
         label: 'Delete',
-        icon: 'fa-minus', 
+        icon: 'fa-minus',
         command: (event) => {
-          if(!self.selectedQuesions||self.selectedQuesions.length < 1) {
+          if (!this.selectedQuesions || this.selectedQuesions.length < 1) {
             alert("No question choosed")
             return
           }
-          self.delQuestions(event,self.selectedQuesions)
+          this.delQuestions(event, this.selectedQuesions)
         }
       }
     ];
+
+    this.allTags = []
+    this.getTags().then(res=>{
+      console.log(this.allTags)
+    })
   }
+
+  getTags(): Promise<any> {
+    return this.tService.getTags().then(res => {
+      res.forEach(element => {
+        this.allTags.push({ label: element.name, value: element["_id"] });
+      });
+    }, function (err) {
+      console.log(err)
+    })
+  }
+  
   loadData(event: LazyLoadEvent) {
     //event.first = First row offset
     //event.rows = Number of rows per page
@@ -83,19 +103,38 @@ export class DataListComponent implements OnInit {
 
   }
 
-  newQuestion(e){
+  newQuestion(e) {
     this.router.navigate(["q"])
   }
 
-  editQuestion(e,q){
-    this.router.navigate(["q",q._id])
+  editQuestion(e, q) {
+    this.router.navigate(["q", q._id])
   }
-  
-  delQuestions(e,qs){
-    let ids:number[]
-    ids = qs.map(q=>q._id)
+
+  delQuestions(e, qs) {
+    let ids: string[]
+    ids = qs.map(q => q._id)
     // console.log(ids)
     this.questionService.delQuestions(ids)
+      .subscribe(q => {
+        console.log(q)
+        if (q["ok"]) {
+          alert("delete successfully")
+          this.questions = this.questions.filter(q => {
+            return ids.indexOf(q["_id"]) < 0
+          })
+          this.totalRecords = this.totalRecords - q.n
+
+        }
+      })
+  }
+
+  makeATest(){
+    let tags = this.testTags
+    this.questionService.makeATest(tags)
+    .subscribe(qs=>{
+      console.log(qs)
+    })
   }
 
 }

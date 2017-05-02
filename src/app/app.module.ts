@@ -5,7 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { ButtonModule, DataTableModule, MenubarModule, InputTextModule, InputTextareaModule, MultiSelectModule } from 'primeng/primeng';
+import { ButtonModule, DataTableModule, MenubarModule, InputTextModule, InputTextareaModule, MultiSelectModule, ConfirmDialogModule } from 'primeng/primeng';
+// import { ConfirmationService } from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { QuestionService } from "./question.service";
@@ -13,14 +14,20 @@ import { TagService } from "./tag.service"
 
 import { DataListComponent } from './data-list/data-list.component';
 import { DataDetailComponent } from './data-detail/data-detail.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component'
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TagComponent } from './tag/tag.component';
+import { QListComponent } from './q-list/q-list.component';
+import { TListComponent } from './t-list/t-list.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     DataListComponent,
     DataDetailComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TagComponent,
+    QListComponent,
+    TListComponent
   ],
   imports: [
     BrowserModule,
@@ -32,11 +39,13 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MenubarModule,
     InputTextModule,
     InputTextareaModule,
-    MultiSelectModule
+    MultiSelectModule,
+    // ConfirmDialogModule
   ],
   providers: [
     QuestionService,
-    TagService
+    TagService,
+    // ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

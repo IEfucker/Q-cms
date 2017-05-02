@@ -1,26 +1,43 @@
-<h2>数据列表</h2>
-<p-menubar [model]="items"></p-menubar>
+<nav>
+  <a [routerLink]="['q']">Question</a>
+  <a [routerLink]="['t']">Test</a>
+</nav>
+<router-outlet name="list"></router-outlet>
 
-<p-dataTable [value]="questions" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadData($event)"
-  [(selection)]="selectedQuesions">
-  <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-  <p-column header="index">
-    <template let-rowIndex="rowIndex" pTemplate="body">
-      {{rowIndex+1}}
-    </template>
-  </p-column>
-  <p-column field="question" header="question"></p-column>
-  <p-column field="options" header="options">
-    <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
-      <div *ngFor="let opt of q[col.field]">{{opt}}</div>
-    </template>
-  </p-column>
-  <p-column field="correct" header="correct"></p-column>
-  <p-column field="tags" header="tags">
-    <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
-      <div *ngFor="let tag of q[col.field]">{{tag}}</div>
-    </template>
-  </p-column>
-  </p-dataTable>
+<div class="Grid">
+  <div class="Grid-cell main u-3of4">
+    <h2>数据列表</h2>
+    <p-menubar [model]="items"></p-menubar>
 
-  <!--<p-paginator rows="{{defaultRowNum}}" totalRecords="{{totalRecords}}" [rowsPerPageOptions]="rowsPerPageOptions" (onPageChange)="paginate($event)"></p-paginator>-->
+    <p-dataTable [value]="questions" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadData($event)"
+      [(selection)]="selectedQuesions">
+      <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+      <p-column header="index">
+        <template let-rowIndex="rowIndex" pTemplate="body">
+          {{rowIndex+1}}
+        </template>
+      </p-column>
+      <p-column field="question" header="question"></p-column>
+      <p-column field="options" header="options">
+        <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
+          <div *ngFor="let opt of q[col.field]">{{opt}}</div>
+        </template>
+      </p-column>
+      <p-column field="correct" header="correct"></p-column>
+      <p-column field="tags" header="tags">
+        <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
+          <div *ngFor="let tag of q[col.field]">{{tag}}</div>
+        </template>
+      </p-column>
+    </p-dataTable>
+  </div>
+  <div class="Grid-cell">
+    <h3>tags:</h3>
+    <p-multiSelect [options]="allTags" [(ngModel)]="testTags"></p-multiSelect>
+    <br>
+    <button pButton label="生成试题" (click)="makeATest()"></button>
+  </div>
+</div>
+
+
+<!--<p-paginator rows="{{defaultRowNum}}" totalRecords="{{totalRecords}}" [rowsPerPageOptions]="rowsPerPageOptions" (onPageChange)="paginate($event)"></p-paginator>-->
