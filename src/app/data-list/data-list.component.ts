@@ -1,36 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
 import { Router } from "@angular/router"
 
 import { Question } from "../question"
 import { QuestionService } from "../question.service"
-import {TagService} from "../tag.service"
+import { TagService } from "../tag.service"
 import { LazyLoadEvent, MenuItem, SelectItem } from "primeng/primeng"
+
+import { QListComponent } from '../q-list/q-list.component'
+
+import { ListStateService } from "../list-state.service"
 
 @Component({
   selector: 'app-data-list',
   templateUrl: './data-list.component.html',
   styleUrls: ['./data-list.component.css']
 })
-export class DataListComponent implements OnInit {
+export class DataListComponent implements OnInit, AfterViewInit {
   questions: Question[]
   pageNumber: number = 1
   pageSize: number = 2
   rowsPerPageOptions: number[] = [10, 20, 30]
   totalRecords: number
-  selectedQuesions: Question[]
 
   allTags: SelectItem[]
-  testTags:any[]
+  testTags: any[]
 
-  test: number = 1
+  test: any
 
   private items: MenuItem[]
+
+  @ViewChild(QListComponent)
+  private qList: QListComponent;
+
+  ngAfterViewInit() {
+    setTimeout(function () {
+      console.log(this.qList, this.test)
+    }, 3000)
+  }
 
   constructor(
     private router: Router,
     private questionService: QuestionService,
-    private tService: TagService
+    private tService: TagService,
+    private listStateService: ListStateService
   ) { }
 
   ngOnInit() {
@@ -49,28 +62,30 @@ export class DataListComponent implements OnInit {
         label: 'Edit',
         icon: 'fa-edit',
         command: (event) => {
-          if (!this.selectedQuesions || this.selectedQuesions.length !== 1) {
+          let selectedItems = this.listStateService.selectedItems
+          if (!selectedItems || selectedItems.length !== 1) {
             alert("Choose one question to edit")
             return
           }
-          this.editQuestion(event, this.selectedQuesions[0])
+          this.editQuestion(event, selectedItems[0])
         }
       },
       {
         label: 'Delete',
         icon: 'fa-minus',
         command: (event) => {
-          if (!this.selectedQuesions || this.selectedQuesions.length < 1) {
+          let selectedItems = this.listStateService.selectedItems
+          if (!selectedItems || selectedItems.length < 1) {
             alert("No question choosed")
             return
           }
-          this.delQuestions(event, this.selectedQuesions)
+          this.delQuestions(event, selectedItems)
         }
       }
     ];
 
     this.allTags = []
-    this.getTags().then(res=>{
+    this.getTags().then(res => {
       console.log(this.allTags)
     })
   }
@@ -84,24 +99,7 @@ export class DataListComponent implements OnInit {
       console.log(err)
     })
   }
-  
-  loadData(event: LazyLoadEvent) {
-    //event.first = First row offset
-    //event.rows = Number of rows per page
-    //event.sortField = Field name to sort in single sort mode
-    //event.sortOrder = Sort order as number, 1 for asc and -1 for dec in single sort mode
-    //multiSortMeta: An array of SortMeta objects used in multiple columns sorting. Each SortMeta has field and order properties.
-    //filters: Filters object having field as key and filter value, filter matchMode as value
-    console.log(event)
-    this.pageNumber = event.first / event.rows + 1
-    this.pageSize = event.rows
-    this.questionService.getQuestions(this.pageNumber, this.pageSize).then(data => {
-      this.questions = data.list
-      this.totalRecords = data.totalRecords
 
-    })
-
-  }
 
   newQuestion(e) {
     this.router.navigate(["q"])
@@ -129,12 +127,12 @@ export class DataListComponent implements OnInit {
       })
   }
 
-  makeATest(){
+  makeATest() {
     let tags = this.testTags
     this.questionService.makeATest(tags)
-    .subscribe(qs=>{
-      console.log(qs)
-    })
+      .subscribe(qs => {
+        console.log(qs)
+      })
   }
 
 }

@@ -19,6 +19,8 @@ import { TagComponent } from './tag/tag.component';
 import { QListComponent } from './q-list/q-list.component';
 import { TListComponent } from './t-list/t-list.component'
 
+import { ListStateService } from "./list-state.service"
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +47,7 @@ import { TListComponent } from './t-list/t-list.component'
   providers: [
     QuestionService,
     TagService,
+    ListStateService,
     // ConfirmationService
   ],
   bootstrap: [AppComponent]
