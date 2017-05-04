@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DataDetailComponent } from './data-detail.component';
+import { QDetailComponent } from './q-detail.component';
 
-describe('DataDetailComponent', () => {
-  let component: DataDetailComponent;
-  let fixture: ComponentFixture<DataDetailComponent>;
+describe('QDetailComponent', () => {
+  let component: QDetailComponent;
+  let fixture: ComponentFixture<QDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataDetailComponent ]
+      declarations: [ QDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DataDetailComponent);
+    fixture = TestBed.createComponent(QDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

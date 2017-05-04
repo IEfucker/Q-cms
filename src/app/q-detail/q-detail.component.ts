@@ -16,10 +16,10 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
   selector: 'app-data-detail',
-  templateUrl: './data-detail.component.html',
-  styleUrls: ['./data-detail.component.css']
+  templateUrl: './q-detail.component.html',
+  styleUrls: ['./q-detail.component.css']
 })
-export class DataDetailComponent implements OnInit {
+export class QDetailComponent implements OnInit {
   // private q: Observable<Question>
 
   private q: Question

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from "@angular/router"
 
 import { Question } from "../question"
@@ -13,7 +13,7 @@ import { ListStateService } from "../list-state.service"
   templateUrl: './q-list.component.html',
   styleUrls: ['./q-list.component.css']
 })
-export class QListComponent implements OnInit {
+export class QListComponent implements OnInit, OnDestroy {
 
   questions: Question[]
   pageNumber: number = 1
@@ -32,6 +32,13 @@ export class QListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+  }
+
+  ngOnDestroy() {
+    console.log("destroy")
+    // reset list state service
+    this.listStateService.selectedItems = []
   }
 
   loadData(event: LazyLoadEvent) {

@@ -47,6 +47,8 @@ export class DataListComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    
+
     this.items = [
       {
         label: 'New',
@@ -54,7 +56,7 @@ export class DataListComponent implements OnInit, AfterViewInit {
         command: (event) => {
           //event.originalEvent: Browser event
           //event.item: menuitem metadata
-          this.newQuestion(event)
+          this.newItem(event)
         }
 
       },
@@ -67,7 +69,7 @@ export class DataListComponent implements OnInit, AfterViewInit {
             alert("Choose one question to edit")
             return
           }
-          this.editQuestion(event, selectedItems[0])
+          this.editItem(event, selectedItems[0])
         }
       },
       {
@@ -79,7 +81,7 @@ export class DataListComponent implements OnInit, AfterViewInit {
             alert("No question choosed")
             return
           }
-          this.delQuestions(event, selectedItems)
+          this.delItems(event, selectedItems)
         }
       }
     ];
@@ -101,15 +103,15 @@ export class DataListComponent implements OnInit, AfterViewInit {
   }
 
 
-  newQuestion(e) {
+  newItem(e) {
     this.router.navigate(["q"])
   }
 
-  editQuestion(e, q) {
+  editItem(e, q) {
     this.router.navigate(["q", q._id])
   }
 
-  delQuestions(e, qs) {
+  delItems(e, qs) {
     let ids: string[]
     ids = qs.map(q => q._id)
     // console.log(ids)

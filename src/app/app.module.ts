@@ -13,7 +13,7 @@ import { QuestionService } from "./question.service";
 import { TagService } from "./tag.service"
 
 import { DataListComponent } from './data-list/data-list.component';
-import { DataDetailComponent } from './data-detail/data-detail.component';
+import { QDetailComponent } from './q-detail/q-detail.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TagComponent } from './tag/tag.component';
 import { QListComponent } from './q-list/q-list.component';
@@ -25,7 +25,7 @@ import { ListStateService } from "./list-state.service"
   declarations: [
     AppComponent,
     DataListComponent,
-    DataDetailComponent,
+    QDetailComponent,
     PageNotFoundComponent,
     TagComponent,
     QListComponent,
