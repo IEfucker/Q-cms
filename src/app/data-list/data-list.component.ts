@@ -30,13 +30,9 @@ export class DataListComponent implements OnInit, AfterViewInit {
 
   private items: MenuItem[]
 
-  @ViewChild(QListComponent)
-  private qList: QListComponent;
-
   ngAfterViewInit() {
-    setTimeout(function () {
-      console.log(this.qList, this.test)
-    }, 3000)
+    setTimeout(() => {
+    }, 500)
   }
 
   constructor(
@@ -47,7 +43,6 @@ export class DataListComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    
 
     this.items = [
       {
@@ -57,7 +52,7 @@ export class DataListComponent implements OnInit, AfterViewInit {
           //event.originalEvent: Browser event
           //event.item: menuitem metadata
           this.newItem(event)
-        }
+        },
 
       },
       {
@@ -86,55 +81,22 @@ export class DataListComponent implements OnInit, AfterViewInit {
       }
     ];
 
-    this.allTags = []
-    this.getTags().then(res => {
-      console.log(this.allTags)
-    })
+
   }
 
-  getTags(): Promise<any> {
-    return this.tService.getTags().then(res => {
-      res.forEach(element => {
-        this.allTags.push({ label: element.name, value: element["_id"] });
-      });
-    }, function (err) {
-      console.log(err)
-    })
-  }
+
 
 
   newItem(e) {
-    this.router.navigate(["q"])
+    this.listStateService.newItem(e)
   }
 
-  editItem(e, q) {
-    this.router.navigate(["q", q._id])
+  editItem(e, item) {
+    this.listStateService.editItem(e, item)
   }
 
-  delItems(e, qs) {
-    let ids: string[]
-    ids = qs.map(q => q._id)
-    // console.log(ids)
-    this.questionService.delQuestions(ids)
-      .subscribe(q => {
-        console.log(q)
-        if (q["ok"]) {
-          alert("delete successfully")
-          this.questions = this.questions.filter(q => {
-            return ids.indexOf(q["_id"]) < 0
-          })
-          this.totalRecords = this.totalRecords - q.n
-
-        }
-      })
-  }
-
-  makeATest() {
-    let tags = this.testTags
-    this.questionService.makeATest(tags)
-      .subscribe(qs => {
-        console.log(qs)
-      })
+  delItems(e, items) {
+    this.listStateService.delItems(e, items)
   }
 
 }

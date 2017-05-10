@@ -11,6 +11,7 @@ import { ButtonModule, DataTableModule, MenubarModule, InputTextModule, InputTex
 import { AppComponent } from './app.component';
 import { QuestionService } from "./question.service";
 import { TagService } from "./tag.service"
+import {TestService} from "./test.service"
 
 import { DataListComponent } from './data-list/data-list.component';
 import { QDetailComponent } from './q-detail/q-detail.component';
@@ -48,6 +49,7 @@ import { ListStateService } from "./list-state.service"
     QuestionService,
     TagService,
     ListStateService,
+    TestService
     // ConfirmationService
   ],
   bootstrap: [AppComponent]

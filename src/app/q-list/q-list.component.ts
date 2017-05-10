@@ -22,7 +22,7 @@ export class QListComponent implements OnInit, OnDestroy {
   totalRecords: number
   selectedQuesions: Question[]
 
-  allTags: SelectItem[]
+  // allTags: SelectItem[]
   testTags: any[]
 
   constructor(
@@ -32,13 +32,14 @@ export class QListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-
+    this.listStateService.listComponent = this
   }
 
   ngOnDestroy() {
-    console.log("destroy")
+    // console.log("destroy")
     // reset list state service
     this.listStateService.selectedItems = []
+    this.listStateService.listComponent = null
   }
 
   loadData(event: LazyLoadEvent) {
@@ -69,5 +70,30 @@ export class QListComponent implements OnInit, OnDestroy {
     this.listStateService.selectedItems = this.selectedQuesions
   }
 
+  newItem(e) {
+    this.router.navigate(["q"])
+  }
+
+  editItem(e, q) {
+    this.router.navigate(["q", q._id])
+  }
+
+  delItems(e, qs) {
+    let ids: string[]
+    ids = qs.map(q => q._id)
+    // console.log(ids)
+    this.questionService.delQuestions(ids)
+      .subscribe(q => {
+        console.log(q)
+        if (q["ok"]) {
+          alert("delete successfully")
+          this.questions = this.questions.filter(q => {
+            return ids.indexOf(q["_id"]) < 0
+          })
+          this.totalRecords = this.totalRecords - q.n
+
+        }
+      })
+  }
 
 }

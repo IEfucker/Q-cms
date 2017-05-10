@@ -1,25 +1,21 @@
-<p>
-  t-list works!
-</p>
+<p-dataTable #qtestdt [value]="tests" [paginator]="true"  [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadData($event)"  (onRowUnselect)="handleRowUnselected($event)" (onRowSelect)="handleRowSelect($event)" [(selection)]="selectedTests">
+  <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+  <p-column header="index">
+    <template let-rowIndex="rowIndex" pTemplate="body">
+      {{rowIndex+1}}
+    </template>
+  </p-column>
+  <p-column field="questions" header="questions">
+    <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
+      <div *ngFor="let opt of q[col.field]">{{opt.question}}</div>
+    </template>
+  </p-column>
+</p-dataTable>
 
-<p-dataTable [value]="questions" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadData($event)"
-      [(selection)]="selectedQuesions">
-      <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-      <p-column header="index">
-        <template let-rowIndex="rowIndex" pTemplate="body">
-          {{rowIndex+1}}
-        </template>
-      </p-column>
-      <p-column field="question" header="question"></p-column>
-      <p-column field="options" header="options">
-        <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
-          <div *ngFor="let opt of q[col.field]">{{opt}}</div>
-        </template>
-      </p-column>
-      <p-column field="correct" header="correct"></p-column>
-      <p-column field="tags" header="tags">
-        <template let-col let-q="rowData" let-ri="rowIndex" pTemplate="body">
-          <div *ngFor="let tag of q[col.field]">{{tag}}</div>
-        </template>
-      </p-column>
-    </p-dataTable>
+
+<div class="Grid-cell">
+  <h3>tags:</h3>
+  <p-multiSelect [options]="allTags" [(ngModel)]="selectedTags"></p-multiSelect>
+  <br>
+  <button pButton label="生成试题" (click)="makeATest()"></button>
+</div>
